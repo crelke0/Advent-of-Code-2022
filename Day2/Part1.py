@@ -5,9 +5,8 @@ with open(os.path.join(os.path.dirname(__file__), 'input.txt'), 'r') as input_fi
 puzzle_input = puzzle_input.split('\n')
 score = 0
 for line in puzzle_input:
-  a, b = line.split(' ')
-  a = 'ABC'.index(a)
-  b = 'XYZ'.index(b)
+  a = 'ABC'.index(line[0])
+  b = 'XYZ'.index(line[2])
   score += b + 1
   if a == b:
     score += 3
