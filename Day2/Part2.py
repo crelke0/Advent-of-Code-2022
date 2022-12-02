@@ -7,10 +7,6 @@ score = 0
 for line in puzzle_input:
   a, b = line.split(' ')
   a = 'ABC'.index(a)
-  b = ('XYZ'.index(b) + a + 2)%3
-  score += b + 1
-  if a == b:
-    score += 3
-  elif a == (b + 2)%3:
-    score += 6
+  b = 'XYZ'.index(b)
+  score += b*3 + (b + a + 2)%3 + 1
 print(score)
