@@ -16,7 +16,7 @@ add to total
 <<<<[++>>>-->]
 +[-<+]
 <]<<<
-check if eof:
+check if eof
 ,>+++[<----------->-]<
 ]
 print
