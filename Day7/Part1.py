@@ -2,42 +2,36 @@ import os
 
 with open(os.path.join(os.path.dirname(__file__), 'input.txt'), 'r') as input_file:
   puzzle_input = input_file.read()
+
 commands = puzzle_input.split('$ ')[1:]
-CHILDS = 'childs'
-DIRECT_SIZE = 'direct_size'
-directory = {CHILDS: {'/': {CHILDS: {}, DIRECT_SIZE: 0}}}
-current_path = []
-current_folder = directory
+path = []
+sizes = {}
+total = 0
 for command in commands:
   if command[:2] == 'ls':
     lines = command.splitlines()[1:]
+    direct_size = 0
     for line in lines:
       if line[:3] != 'dir':
-        current_folder[DIRECT_SIZE] += int(line.split(' ')[0])
-  elif command[3]  == '.':
-    current_path = current_path[:-1]
-    folder = directory
-    for next_folder in current_path:
-      folder = folder[CHILDS][next_folder]
-    current_folder = folder
+        direct_size += int(line.split(' ')[0])
+    sizes[''.join(path)] = direct_size
+    if direct_size <= 100000:
+      total += direct_size
+
+    for i in range(1, len(path)):
+      ancestor_path_key = ''.join(path[:i])
+      ancestor_size = sizes[ancestor_path_key]
+      if ancestor_size + direct_size <= 100000:
+        total += direct_size
+      elif ancestor_size <= 100000:
+        total -= ancestor_size
+      sizes[ancestor_path_key] += direct_size
+      
+  elif command[3:5] == '..':
+    path.pop()
   else:
-    folder = command.split(' ')[1][:-1]
-    if folder not in current_folder[CHILDS]:
-      current_folder[CHILDS][folder] = {CHILDS: {}, DIRECT_SIZE: 0}
-    current_folder = current_folder[CHILDS][folder]
-    current_path.append(folder)
+    folder = command[3:-1]
+    path.append(folder)
+    sizes[''.join(path)] = 0
 
-directory = directory[CHILDS]
-
-result = 0
-def traverse(directory):
-  global result
-  total = directory[DIRECT_SIZE]
-  for child in directory[CHILDS].values():
-    total += traverse(child)
-  if total <= 100000:
-    result += total
-  return total
-
-traverse(directory['/'])
-print(result)
+print(total)
