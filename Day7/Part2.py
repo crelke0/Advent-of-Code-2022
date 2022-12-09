@@ -32,3 +32,37 @@ for size in sizes.values():
     smallest = size
 
 print(smallest)
+
+# recursive approach
+def traverse(contents, _index=0):
+  index = _index
+  size = 0
+  ret = []
+  childs_count = 0
+  content = contents[index]
+  lines = content.splitlines()
+  for line in lines:
+    if line[:3] == 'dir':
+      childs_count += 1
+    else:
+      size += int(line.split(' ')[0])
+  index += 1
+  for _ in range(childs_count):
+    result = traverse(contents, index)
+    ret += result[0]
+    size += ret[-1]
+    index = result[1]
+  ret.append(size)
+  if _index == 0:
+    return ret
+  return ret, index
+
+contents = [command[3:] for command in list(filter(lambda x: x[:2] == 'ls', puzzle_input.split('$ ')[1:]))]
+sizes = traverse(contents)
+space_needed = sizes[-1] - 40000000
+smallest = float('inf')
+for size in sizes:
+  if smallest > size > space_needed:
+    smallest = size
+
+print(smallest)

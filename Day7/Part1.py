@@ -35,3 +35,31 @@ for command in commands:
     sizes[''.join(path)] = 0
 
 print(total)
+
+# recursive approach
+def traverse(contents, _index=0):
+  index = _index
+  size = 0
+  ret = 0
+  childs_count = 0
+  content = contents[index]
+  lines = content.splitlines()
+  for line in lines:
+    if line[:3] == 'dir':
+      childs_count += 1
+    else:
+      size += int(line.split(' ')[0])
+  index += 1
+  for _ in range(childs_count):
+    result = traverse(contents, index)
+    ret += result[0]
+    size += result[1]
+    index = result[2]
+  if size <= 100000:
+    ret += size
+  if _index == 0:
+    return ret
+  return ret, size, index
+
+contents = [command[3:] for command in list(filter(lambda x: x[:2] == 'ls', puzzle_input.split('$ ')[1:]))]
+print(traverse(contents))
