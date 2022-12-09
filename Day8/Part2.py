@@ -2,10 +2,6 @@ import os
 
 with open(os.path.join(os.path.dirname(__file__), 'input.txt'), 'r') as input_file:
   puzzle_input = input_file.read()
-import os
-
-with open(os.path.join(os.path.dirname(__file__), 'input.txt'), 'r') as input_file:
-  puzzle_input = input_file.read()
 grid = [[int(c) for c in list(line)] for line in puzzle_input.splitlines()]
 best_score = 0
 for x in range(len(grid)):
