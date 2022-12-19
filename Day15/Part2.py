@@ -30,6 +30,7 @@ for sensor_a in sensors:
       s = int(binary[0])*2 - 1
       a1 = int(binary[1])*2 - 1
       a2 = int(binary[2])*2 - 1
+      # formula for finding intersection points between two sensor bounds
       x1 = (h2*s-a2*s*r2+k2+h1*s-a1*s*r1-k1)//(2*s)
       y1 = s*(x1-h1+a1*r1)+k1
       if [x1, y1] not in valid_points:
