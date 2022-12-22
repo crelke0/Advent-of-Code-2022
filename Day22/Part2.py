@@ -67,13 +67,17 @@ while True:
       else:
         continue
 
-      if key2 not in side.neighbors[key1][1].neighbors:
-        make_edge = True
+      make_edge = True
+      for n in side.neighbors[key1][1].neighbors.values():
+        if n[1] == side.neighbors[key2][1]:
+          make_edge = False
+          break
+      if make_edge:
         break
     if make_edge:
-      transform = key2 - key1 + side.neighbors[key1][0] + side.neighbors[key2][0]
-      side.neighbors[key1][1].neighbors[key2 + side.neighbors[key1][0]] = [transform, side.neighbors[key2][1]]
-      side.neighbors[key2][1].neighbors[key1 + side.neighbors[key2][0]] = [-transform, side.neighbors[key1][1]]
+      transform = (key2 + side.neighbors[key2][0]) - (key1 + side.neighbors[key1][0])
+      side.neighbors[key1][1].neighbors[(key2 + side.neighbors[key1][0])%4] = [transform, side.neighbors[key2][1]]
+      side.neighbors[key2][1].neighbors[(key1 + side.neighbors[key2][0])%4] = [-transform, side.neighbors[key1][1]]
       done = False
   if done: break
 
